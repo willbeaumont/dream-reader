@@ -1,7 +1,14 @@
 :root {
-  --primary-color: rgb(34, 84, 45);
-  --primary-hover: rgb(45, 110, 59);
-  --white: #fff;
+  --primary-color: #2e7d32;
+  --primary-hover: #388e3c;
+  --primary-light: #a5d6a7;
+  --secondary-color: #64b5f6;
+  --secondary-hover: #42a5f5;
+  --white: #ffffff;
+  --off-white: #f8f9fa;
+  --gray-light: #e9ecef;
+  --gray: #6c757d;
+  --text-dark: #2c3e50;
   --shadow-standard: 0 4px 30px rgba(0, 0, 0, 0.1);
   --border-radius: 8px;
   --spacing-standard: 1em;
@@ -13,8 +20,8 @@ body {
   background: linear-gradient(
     180deg,
     var(--primary-color) 0%,
-    rgb(67, 137, 81) 50%,
-    var(--white) 100%
+    var(--primary-light) 60%,
+    var(--off-white) 100%
   );
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   min-height: 100vh;
@@ -23,18 +30,18 @@ body {
   justify-content: center;
   align-items: center;
   overflow-x: hidden;
-  color: #333;
+  color: var(--text-dark);
 }
 
 main {
   max-width: var(--max-content-width);
   width: 80vw;
   max-height: calc(100vh - 4em);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-standard);
   backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px); /* Safari support */
+  -webkit-backdrop-filter: blur(5px);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -56,7 +63,7 @@ header {
 section {
   padding: 1.5em;
   margin-bottom: var(--spacing-standard);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: var(--border-radius);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
@@ -74,7 +81,7 @@ section.button {
 textarea {
   width: 100%;
   padding: var(--spacing-standard);
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-light);
   border-radius: var(--border-radius);
   font-family: inherit;
   resize: vertical;
@@ -86,7 +93,7 @@ textarea {
 textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(34, 84, 45, 0.1);
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
 }
 
 button {
@@ -96,23 +103,42 @@ button {
   font-size: 1em;
   font-weight: 600;
   font-family: inherit;
-  background-color: var(--primary-color);
   cursor: pointer;
   transition: all 0.25s ease;
   color: var(--white);
-  margin: 0.5em 0;
+  margin: 0.5em;
 }
 
-button:hover {
+button.primary {
+  background-color: var(--primary-color);
+}
+
+button.secondary {
+  background-color: var(--secondary-color);
+}
+
+button.primary:hover {
   background-color: var(--primary-hover);
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-button:focus,
-button:focus-visible {
+button.primary:focus,
+button.primary:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(34, 84, 45, 0.4);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.4);
+}
+
+button.secondary:hover {
+  background-color: var(--secondary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.secondary:focus,
+button.secondary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.4);
 }
 
 ul {
@@ -159,17 +185,16 @@ main::-webkit-scrollbar-thumb {
   border-radius: 20px;
 }
 
-/* Add these new styles to your existing CSS */
-
+/* Interpretation article styles */
 .interpretation-article {
-  max-height: 150px; /* Initial collapsed height */
+  max-height: 150px;
   overflow: hidden;
   position: relative;
   transition: max-height 0.5s ease-in-out;
 }
 
 .interpretation-article.expanded {
-  max-height: 2000px; /* Large enough to contain content */
+  max-height: 2000px;
 }
 
 .expand-button {
@@ -198,8 +223,8 @@ main::-webkit-scrollbar-thumb {
   height: 50px;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.9) 100%
+    rgba(248, 249, 250, 0) 0%,
+    rgba(248, 249, 250, 0.95) 100%
   );
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -209,7 +234,6 @@ main::-webkit-scrollbar-thumb {
   opacity: 0;
 }
 
-/* Optional: Add rotation animation for expand icon */
 .expand-icon {
   transition: transform 0.3s ease;
 }

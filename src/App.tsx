@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthenticator, Loader, Text, View } from "@aws-amplify/ui-react";
+import { useAuthenticator, Loader } from "@aws-amplify/ui-react";
 import { useAIGeneration } from "./client";
 import ExpandableArticle from "./ExpandableArticle";
 
@@ -34,13 +34,15 @@ function App() {
         <textarea value={dream} onChange={(e) => setDream(e.target.value)} />
       </section>
       <section className="button-section">
-        <button onClick={interpretDream}>Interpret Dream</button>
-        <button onClick={signOut}>Sign out</button>
+        <button className="primary" onClick={interpretDream}>
+          Interpret Dream
+        </button>
+        <button className="secondary" onClick={signOut}>
+          Sign out
+        </button>
       </section>
       {(interpretation.isLoading || story.isLoading) && (
-        <section>
-          <Loader variation="linear" />
-        </section>
+        <Loader variation="linear" />
       )}
 
       {story.data && (
@@ -51,7 +53,7 @@ function App() {
           </section>
         </article>
       )}
-      {interpretation.data && (
+      {interpretation.data && story.data && (
         <ExpandableArticle>
           <h2>Interpretation:</h2>
           <section>
