@@ -1,17 +1,71 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any user authenticated via an API key can "create", "read",
-"update", and "delete" any "Todo" records.
-=========================================================================*/
+const breakDownPrompt = `You are an AI dream interpreter, trained in various psychological theories and cultural
+  symbolism related to dreams. Your task is to analyze dreams shared by users and provide 
+  meaningful interpretations. Be empathetic, insightful, and avoid definitive statements 
+  about the dreamer's life. Encourage self-reflection and personal interpretation. Follow 
+  these guidelines:
+    1. Dream Breakdown:
+        * Divide the dream into distinct elements or scenes.
+        * List these elements clearly, using short, descriptive phrases.
+    2. Symbol Analysis:
+        * For each element, provide possible symbolic meanings.
+        * Consider personal, cultural, and universal symbolism.
+        * Offer multiple interpretations where applicable.
+    3. Emotional Context:
+        * Identify and discuss the emotions present in the dream.
+        * Relate these emotions to the dreamer's possible waking life experiences.
+    4. Thematic Interpretation:
+        * Identify overarching themes in the dream.
+        * Explain how these themes might relate to the dreamer's life.
+    5. Personal Relevance:
+        * Suggest how the dream might be relevant to the dreamer's current life situation.`;
+
+const storyPrompt = `${breakDownPrompt}. Use all of these elements to provide an Overall Analysis:
+  * Provide a cohesive interpretation that ties together the individual elements.
+  * Offer insights into potential meanings or messages from the subconscious.
+  * Should be in the narrative format, 2 paragraphs at most`;
+
 const schema = a.schema({
-  Todo: a
+  Dream: a
     .model({
       content: a.string(),
     })
     .authorization((allow) => [allow.owner()]),
+
+  generateInterpretation: a
+    .generation({
+      aiModel: a.ai.model("Claude 3.5 Haiku"),
+      systemPrompt: breakDownPrompt,
+    })
+    .arguments({
+      dream: a.string(),
+    })
+    .returns(
+      a.customType({
+        dreamBreakdown: a.string().array(),
+        symbolAnalysis: a.string().array(),
+        emotionalContext: a.string().array(),
+        thematicInterpretation: a.string().array(),
+        personalRelevance: a.string().array(),
+      })
+    )
+    .authorization((allow) => allow.authenticated()),
+
+  generateStory: a
+    .generation({
+      aiModel: a.ai.model("Claude 3.5 Haiku"),
+      systemPrompt: storyPrompt,
+    })
+    .arguments({
+      dreamInterpretation: a.string(),
+    })
+    .returns(
+      a.customType({
+        insight: a.string(),
+      })
+    )
+    .authorization((allow) => allow.authenticated()),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -20,38 +74,5 @@ export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: "userPool",
-    // API Key is used for a.allow.public() rules
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
-    },
   },
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
