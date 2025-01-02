@@ -26,7 +26,7 @@ export const TopNavigation = () => {
       maxWidth={"1200px"}
       width={"100%"}
       style={{ zIndex: 100 }}
-      backgroundColor={"white"}
+      backgroundColor={"background.primary"}
     >
       <Flex
         direction="row"
