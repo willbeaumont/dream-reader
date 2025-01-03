@@ -7,12 +7,14 @@ import {
   ButtonGroup,
   TextAreaField,
   Accordion,
+  Text,
+  Tabs,
 } from "@aws-amplify/ui-react";
 import { useAIGeneration } from "../client";
 
 export const Dream = () => {
   const [dream, setDream] = useState<string>("");
-  const [openAccordian, setOpenAccordian] = useState<string[]>(["enter-dream"]);
+  const [activeTab, setActiveTab] = useState<string>("enter-dream");
   const [interpretation, generateInterpretation] = useAIGeneration(
     "generateInterpretation"
   );
@@ -28,7 +30,7 @@ export const Dream = () => {
 
   useEffect(() => {
     if (story.data) {
-      setOpenAccordian(["dream-story"]);
+      setActiveTab("dream-insights");
     }
   }, [story.data]);
 
@@ -38,98 +40,123 @@ export const Dream = () => {
 
   return (
     <Authenticator>
-      <Accordion.Container
-        value={openAccordian}
-        onValueChange={(value) => value && setOpenAccordian(value)}
-        allowMultiple
-      >
-        <Accordion.Item value="enter-dream">
-          <Accordion.Trigger>
-            <Heading level={2}>Enter your dream</Heading>
-            <Accordion.Icon />
-          </Accordion.Trigger>
-          <Accordion.Content>
-            <TextAreaField
-              autoResize
-              label="Dream input"
-              descriptiveText="Enter a dream to interpret"
-              placeholder="Your dream..."
-              value={dream}
-              onChange={(e) => setDream(e.currentTarget.value)}
-            />
-            <ButtonGroup>
-              <Button
-                variation="primary"
-                onClick={interpretDream}
-                isLoading={interpretation.isLoading || story.isLoading}
-                loadingText="Interpreting..."
+      <Tabs
+        justifyContent={"flex-start"}
+        value={activeTab}
+        items={[
+          {
+            label: "Enter your dream",
+            value: "enter-dream",
+            content: (
+              <View
+                style={{
+                  display: "grid",
+                  gap: "1rem",
+                }}
               >
-                Interpret Dream
-              </Button>
-            </ButtonGroup>
-          </Accordion.Content>
-        </Accordion.Item>
-
-        <Accordion.Item value="dream-story">
-          <Accordion.Trigger>
-            <Heading level={2}>Dream insights</Heading>
-            <Accordion.Icon />
-          </Accordion.Trigger>
-          <Accordion.Content>
-            {story.data && (
-              <View typeof="article">
-                <section>
-                  <p>{story.data?.insight}</p>
-                </section>
+                <TextAreaField
+                  autoResize
+                  label="Dream input"
+                  descriptiveText="Enter a dream to interpret"
+                  placeholder="Your dream..."
+                  value={dream}
+                  onChange={(e) => setDream(e.currentTarget.value)}
+                />
+                <ButtonGroup>
+                  <Button
+                    variation="primary"
+                    onClick={interpretDream}
+                    isLoading={interpretation.isLoading || story.isLoading}
+                    loadingText="Interpreting..."
+                  >
+                    Interpret Dream
+                  </Button>
+                </ButtonGroup>
               </View>
-            )}
-          </Accordion.Content>
-        </Accordion.Item>
-        <Accordion.Item value="dream-breakdown">
-          <Accordion.Trigger>
-            <Heading level={2}>Interpretation</Heading>
-            <Accordion.Icon />
-          </Accordion.Trigger>
-          <Accordion.Content>
-            {interpretation.data && story.data && (
-              <section>
-                <Heading level={3}>Dream Breakdown:</Heading>
-                <ul>
-                  {interpretation.data?.dreamBreakdown?.map(
-                    (item, itemIndex) => (
-                      <li key={`dreamBreakdown-${itemIndex}`}>{item}</li>
-                    )
-                  )}
-                </ul>
-                <Heading level={3}>Symbol Analysis:</Heading>
-                <ul>
-                  {interpretation.data?.symbolAnalysis?.map(
-                    (item, itemIndex) => (
-                      <li key={`dreamInterpretation-${itemIndex}`}>{item}</li>
-                    )
-                  )}
-                </ul>
-                <Heading level={3}>Emotional Context:</Heading>
-                <ul>
-                  {interpretation.data?.emotionalContext?.map(
-                    (item, itemIndex) => (
-                      <li key={`dreamInterpretation-${itemIndex}`}>{item}</li>
-                    )
-                  )}
-                </ul>
-                <Heading level={3}>Thematic Interpretation:</Heading>
-                <ul>
-                  {interpretation.data?.thematicInterpretation?.map(
-                    (item, itemIndex) => (
-                      <li key={`dreamInterpretation-${itemIndex}`}>{item}</li>
-                    )
-                  )}
-                </ul>
-              </section>
-            )}
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion.Container>
+            ),
+          },
+          {
+            label: "Dream insights",
+            value: "dream-insights",
+            isDisabled: !story.data,
+            content: (
+              <View
+                style={{
+                  display: "grid",
+                  gap: "1rem",
+                  padding: "1rem",
+                }}
+              >
+                <View typeof="article">
+                  <Text>{story.data?.insight}</Text>
+                </View>
+                <Accordion.Container>
+                  <Accordion.Item value="dream-breakdown">
+                    <Accordion.Trigger>
+                      <Heading level={2}>Interpretation</Heading>
+                      <Accordion.Icon />
+                    </Accordion.Trigger>
+                    <Accordion.Content>
+                      {interpretation.data && story.data && (
+                        <section>
+                          <Heading level={3}>Dream Breakdown</Heading>
+                          <Text>
+                            <ul>
+                              {interpretation.data?.dreamBreakdown?.map(
+                                (item, itemIndex) => (
+                                  <li key={`dreamBreakdown-${itemIndex}`}>
+                                    {item}
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </Text>
+                          <Heading level={3}>Symbol Analysis</Heading>
+                          <Text>
+                            <ul>
+                              {interpretation.data?.symbolAnalysis?.map(
+                                (item, itemIndex) => (
+                                  <li key={`dreamInterpretation-${itemIndex}`}>
+                                    {item}
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </Text>
+                          <Heading level={3}>Emotional Context</Heading>
+                          <Text>
+                            <ul>
+                              {interpretation.data?.emotionalContext?.map(
+                                (item, itemIndex) => (
+                                  <li key={`dreamInterpretation-${itemIndex}`}>
+                                    {item}
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </Text>
+                          <Heading level={3}>Thematic Interpretation</Heading>
+                          <Text>
+                            <ul>
+                              {interpretation.data?.thematicInterpretation?.map(
+                                (item, itemIndex) => (
+                                  <li key={`dreamInterpretation-${itemIndex}`}>
+                                    {item}
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </Text>
+                        </section>
+                      )}
+                    </Accordion.Content>
+                  </Accordion.Item>
+                </Accordion.Container>
+              </View>
+            ),
+          },
+        ]}
+      />
     </Authenticator>
   );
 };

@@ -14,6 +14,23 @@ function App() {
   const theme: Theme = {
     name: "dream-theme",
     overrides: [defaultDarkModeOverride],
+    tokens: {
+      components: {
+        heading: {
+          1: {
+            fontSize: "2.6rem",
+            fontWeight: "400",
+          },
+          2: {
+            fontSize: "{fontSizes.xxl}",
+            fontWeight: "300",
+          },
+          3: {
+            fontSize: "{fontSizes.xl}",
+          },
+        },
+      },
+    },
   };
 
   return (
@@ -23,6 +40,7 @@ function App() {
           backgroundColor={"background.primary"}
           width={"100%"}
           minHeight={"100vh"}
+          padding={"0 .5rem"}
         >
           <View
             maxWidth={"1200px"}

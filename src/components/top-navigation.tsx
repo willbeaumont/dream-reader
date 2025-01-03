@@ -24,7 +24,7 @@ export const TopNavigation = () => {
       height={"60px"}
       position={"fixed"}
       maxWidth={"1200px"}
-      width={"100%"}
+      width={"calc(100% - 1rem)"}
       style={{ zIndex: 100 }}
       backgroundColor={"background.primary"}
     >

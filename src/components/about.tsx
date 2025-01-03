@@ -2,8 +2,13 @@ import { Heading, View, Text } from "@aws-amplify/ui-react";
 
 export const About = () => {
   return (
-    <View>
-      <Heading level={2}>About Our Dream Interpretation App</Heading>
+    <View
+      style={{
+        display: "grid",
+        gap: "1rem",
+      }}
+    >
+      <Heading level={2}>About Our App</Heading>
       <Text>
         Welcome to our Dream Interpretation App, where your dreams take center
         stage! This innovative platform harnesses the power of generative AI to
@@ -18,7 +23,7 @@ export const About = () => {
         details, and let our AI generate interpretations that spark conversation
         and inspire personal reflection.
       </Text>
-      <Heading level={2}>A Starting Point for Reflection</Heading>
+      <Heading level={2}>A Start for Reflection</Heading>
       <Text>
         While our interpretations are crafted to be engaging and
         thought-provoking, it’s important to remember that they are not a
