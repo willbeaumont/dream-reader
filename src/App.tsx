@@ -27,6 +27,7 @@ function App() {
           },
           3: {
             fontSize: "{fontSizes.xl}",
+            fontWeight: "200",
           },
         },
       },
