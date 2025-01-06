@@ -43,6 +43,7 @@ export const Dream = () => {
       <Tabs
         justifyContent={"flex-start"}
         value={activeTab}
+        onValueChange={(e) => setActiveTab(e)}
         items={[
           {
             label: "Enter your dream",
@@ -60,6 +61,7 @@ export const Dream = () => {
                   descriptiveText="Enter a dream to interpret"
                   placeholder="Your dream..."
                   value={dream}
+                  minHeight={"fit-content"}
                   onChange={(e) => setDream(e.currentTarget.value)}
                 />
                 <ButtonGroup>
