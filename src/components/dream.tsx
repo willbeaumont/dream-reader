@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+
+import { Amplify } from "aws-amplify";
+import outputs from "../../amplify_outputs.json";
+import { generateClient } from "aws-amplify/api";
+import { useAIGeneration } from "../client";
+import { Schema } from "../../amplify/data/resource";
+
 import {
   Authenticator,
   Heading,
@@ -10,7 +17,12 @@ import {
   Text,
   Tabs,
 } from "@aws-amplify/ui-react";
-import { useAIGeneration } from "../client";
+import { History } from "./history";
+
+Amplify.configure(outputs);
+
+const client = generateClient<Schema>();
+const { data, errors } = await client.models.Dream.list();
 
 export const Dream = () => {
   const [dream, setDream] = useState<string>("");
@@ -35,6 +47,9 @@ export const Dream = () => {
   }, [story.data]);
 
   async function interpretDream() {
+    await client.models.Dream.create({
+      content: dream,
+    });
     generateInterpretation({ dream });
   }
 
@@ -60,9 +75,9 @@ export const Dream = () => {
                   label="Dream input"
                   descriptiveText="Enter a dream to interpret"
                   placeholder="Your dream..."
-                  value={dream}
-                  minHeight={"fit-content"}
                   onChange={(e) => setDream(e.currentTarget.value)}
+                  rows={3}
+                  resize="none"
                 />
                 <ButtonGroup>
                   <Button
@@ -102,58 +117,76 @@ export const Dream = () => {
                       {interpretation.data && story.data && (
                         <section>
                           <Heading level={3}>Dream Breakdown</Heading>
-                          <Text>
-                            <ul>
-                              {interpretation.data?.dreamBreakdown?.map(
-                                (item, itemIndex) => (
-                                  <li key={`dreamBreakdown-${itemIndex}`}>
-                                    {item}
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          </Text>
+                          <ul>
+                            {interpretation.data?.dreamBreakdown?.map(
+                              (item, itemIndex) => (
+                                <View
+                                  as="li"
+                                  color="font.primary"
+                                  key={`dreamBreakdown-${itemIndex}`}
+                                >
+                                  <Text>{item}</Text>
+                                </View>
+                              )
+                            )}
+                          </ul>
                           <Heading level={3}>Symbol Analysis</Heading>
-                          <Text>
-                            <ul>
-                              {interpretation.data?.symbolAnalysis?.map(
-                                (item, itemIndex) => (
-                                  <li key={`dreamInterpretation-${itemIndex}`}>
-                                    {item}
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          </Text>
+                          <ul>
+                            {interpretation.data?.symbolAnalysis?.map(
+                              (item, itemIndex) => (
+                                <View
+                                  as="li"
+                                  color="font.primary"
+                                  key={`dreamInterpretation-${itemIndex}`}
+                                >
+                                  <Text>{item}</Text>
+                                </View>
+                              )
+                            )}
+                          </ul>
                           <Heading level={3}>Emotional Context</Heading>
-                          <Text>
-                            <ul>
-                              {interpretation.data?.emotionalContext?.map(
-                                (item, itemIndex) => (
-                                  <li key={`dreamInterpretation-${itemIndex}`}>
-                                    {item}
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          </Text>
+                          <ul>
+                            {interpretation.data?.emotionalContext?.map(
+                              (item, itemIndex) => (
+                                <View
+                                  as="li"
+                                  color="font.primary"
+                                  key={`dreamInterpretation-${itemIndex}`}
+                                >
+                                  <Text>{item}</Text>
+                                </View>
+                              )
+                            )}
+                          </ul>
                           <Heading level={3}>Thematic Interpretation</Heading>
-                          <Text>
-                            <ul>
-                              {interpretation.data?.thematicInterpretation?.map(
-                                (item, itemIndex) => (
-                                  <li key={`dreamInterpretation-${itemIndex}`}>
-                                    {item}
-                                  </li>
-                                )
-                              )}
-                            </ul>
-                          </Text>
+                          <ul>
+                            {interpretation.data?.thematicInterpretation?.map(
+                              (item, itemIndex) => (
+                                <li key={`dreamInterpretation-${itemIndex}`}>
+                                  {item}
+                                </li>
+                              )
+                            )}
+                          </ul>
                         </section>
                       )}
                     </Accordion.Content>
                   </Accordion.Item>
                 </Accordion.Container>
+              </View>
+            ),
+          },
+          {
+            label: "My dreams",
+            value: "my-dreams",
+            content: (
+              <View
+                style={{
+                  display: "grid",
+                  gap: "1rem",
+                }}
+              >
+                <History data={data} errors={errors} />
               </View>
             ),
           },
