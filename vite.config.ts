@@ -5,4 +5,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   build: { chunkSizeWarningLimit: 1000 },
+  esbuild: {
+    supported: {
+      "top-level-await": true,
+    },
+  },
 });
