@@ -22,35 +22,59 @@ import { History } from "./history";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
-const { data, errors } = await client.models.Dream.list();
+
+type Dream = Schema["Dream"]["type"];
 
 export const Dream = () => {
-  const [dream, setDream] = useState<string>("");
+  const [dreamInput, setDreamInput] = useState<string>("");
+  const [dreamId, setDreamId] = useState<string>();
   const [activeTab, setActiveTab] = useState<string>("enter-dream");
+
+  const [breakdown, generateBreakdown] = useAIGeneration("generateBreakdown");
   const [interpretation, generateInterpretation] = useAIGeneration(
     "generateInterpretation"
   );
-  const [story, generateStory] = useAIGeneration("generateStory");
 
   useEffect(() => {
-    if (interpretation.data) {
-      generateStory({
-        dreamInterpretation: JSON.stringify(interpretation.data),
+    console.log("breakdown.data effect", breakdown.data);
+    if (breakdown.data) {
+      console.log("breakdown.data exists");
+      generateInterpretation({
+        breakdown: JSON.stringify(breakdown.data),
       });
+    }
+  }, [breakdown.data]);
+
+  useEffect(() => {
+    console.log("interpretation.data effect", interpretation.data);
+    if (interpretation.data) {
+      console.log("interpretation.data effect has data");
+      setActiveTab("dream-insights");
+      console.log("updating dream", dreamId);
+      dreamId &&
+        updateDream(dreamId, breakdown.data, interpretation.data.insight);
     }
   }, [interpretation.data]);
 
-  useEffect(() => {
-    if (story.data) {
-      setActiveTab("dream-insights");
-    }
-  }, [story.data]);
+  async function updateDream(
+    id: string,
+    breakdown?: Dream["breakdown"],
+    interpretation?: Dream["interpretation"]
+  ) {
+    await client.models.Dream.update({
+      id,
+      breakdown,
+      interpretation,
+    });
+  }
 
   async function interpretDream() {
-    await client.models.Dream.create({
-      content: dream,
+    const { data } = await client.models.Dream.create({
+      content: dreamInput,
     });
-    generateInterpretation({ dream });
+    data && setDreamId(data.id);
+    console.log("dream created", data);
+    generateBreakdown({ dream: dreamInput });
   }
 
   return (
@@ -75,7 +99,7 @@ export const Dream = () => {
                   label="Dream input"
                   descriptiveText="Enter a dream to interpret"
                   placeholder="Your dream..."
-                  onChange={(e) => setDream(e.currentTarget.value)}
+                  onChange={(e) => setDreamInput(e.currentTarget.value)}
                   rows={3}
                   resize="none"
                 />
@@ -83,7 +107,7 @@ export const Dream = () => {
                   <Button
                     variation="primary"
                     onClick={interpretDream}
-                    isLoading={interpretation.isLoading || story.isLoading}
+                    isLoading={breakdown.isLoading || interpretation.isLoading}
                     loadingText="Interpreting..."
                   >
                     Interpret Dream
@@ -95,7 +119,7 @@ export const Dream = () => {
           {
             label: "Dream insights",
             value: "dream-insights",
-            isDisabled: !story.data,
+            isDisabled: !interpretation.data,
             content: (
               <View
                 style={{
@@ -105,7 +129,7 @@ export const Dream = () => {
                 }}
               >
                 <View typeof="article">
-                  <Text>{story.data?.insight}</Text>
+                  <Text>{interpretation.data?.insight}</Text>
                 </View>
                 <Accordion.Container>
                   <Accordion.Item value="dream-breakdown">
@@ -114,11 +138,11 @@ export const Dream = () => {
                       <Accordion.Icon />
                     </Accordion.Trigger>
                     <Accordion.Content>
-                      {interpretation.data && story.data && (
+                      {breakdown.data && interpretation.data && (
                         <section>
-                          <Heading level={3}>Dream Breakdown</Heading>
+                          <Heading level={3}>Dream Elements</Heading>
                           <ul>
-                            {interpretation.data?.dreamBreakdown?.map(
+                            {breakdown.data?.elements?.map(
                               (item, itemIndex) => (
                                 <View
                                   as="li"
@@ -132,21 +156,43 @@ export const Dream = () => {
                           </ul>
                           <Heading level={3}>Symbol Analysis</Heading>
                           <ul>
-                            {interpretation.data?.symbolAnalysis?.map(
-                              (item, itemIndex) => (
-                                <View
-                                  as="li"
-                                  color="font.primary"
-                                  key={`dreamInterpretation-${itemIndex}`}
-                                >
-                                  <Text>{item}</Text>
-                                </View>
-                              )
-                            )}
+                            {breakdown.data?.symbols?.map((item, itemIndex) => (
+                              <View
+                                as="li"
+                                color="font.primary"
+                                key={`dreamInterpretation-${itemIndex}`}
+                              >
+                                <Text>{item}</Text>
+                              </View>
+                            ))}
                           </ul>
                           <Heading level={3}>Emotional Context</Heading>
                           <ul>
-                            {interpretation.data?.emotionalContext?.map(
+                            {breakdown.data?.context?.map((item, itemIndex) => (
+                              <View
+                                as="li"
+                                color="font.primary"
+                                key={`dreamInterpretation-${itemIndex}`}
+                              >
+                                <Text>{item}</Text>
+                              </View>
+                            ))}
+                          </ul>
+                          <Heading level={3}>Thematic Interpretation</Heading>
+                          <ul>
+                            {breakdown.data?.themes?.map((item, itemIndex) => (
+                              <View
+                                as="li"
+                                color="font.primary"
+                                key={`dreamInterpretation-${itemIndex}`}
+                              >
+                                <Text>{item}</Text>
+                              </View>
+                            ))}
+                          </ul>
+                          <Heading level={3}>Personal Relevance</Heading>
+                          <ul>
+                            {breakdown.data?.relevance?.map(
                               (item, itemIndex) => (
                                 <View
                                   as="li"
@@ -155,16 +201,6 @@ export const Dream = () => {
                                 >
                                   <Text>{item}</Text>
                                 </View>
-                              )
-                            )}
-                          </ul>
-                          <Heading level={3}>Thematic Interpretation</Heading>
-                          <ul>
-                            {interpretation.data?.thematicInterpretation?.map(
-                              (item, itemIndex) => (
-                                <li key={`dreamInterpretation-${itemIndex}`}>
-                                  {item}
-                                </li>
                               )
                             )}
                           </ul>
@@ -186,7 +222,7 @@ export const Dream = () => {
                   gap: "1rem",
                 }}
               >
-                <History data={data} errors={errors} />
+                <History />
               </View>
             ),
           },
