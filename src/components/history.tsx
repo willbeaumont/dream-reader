@@ -1,21 +1,13 @@
 import { Text, View } from "@aws-amplify/ui-react";
-import type { GraphQLFormattedError } from "graphql";
+import { client } from "../client";
+import { Amplify } from "aws-amplify";
+import outputs from "../../amplify_outputs.json";
 
-interface DreamHistory {
-  content: string | null;
-  readonly id: string;
-  owner: string | null;
-  readonly createdAt: string;
-  readonly updatedAt: string;
-}
+Amplify.configure(outputs);
 
-export const History = ({
-  data,
-  errors,
-}: {
-  data: DreamHistory[];
-  errors?: GraphQLFormattedError[];
-}) => {
+const { data, errors } = await client.models.Dream.list();
+
+export const History = () => {
   return (
     <View>
       <Text>History</Text>
@@ -38,7 +30,11 @@ export const History = ({
                     day: "numeric",
                     year: "numeric",
                   })}
-                  ) {dream.content}
+                  ) {dream.breakdown?.title || "no title saved"} <br />
+                  <br /> {dream.interpretation ||
+                    "no interpretation saved"}{" "}
+                  <br />
+                  <br /> {dream?.content}
                 </Text>
               </View>
             );
