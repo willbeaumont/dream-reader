@@ -30,8 +30,10 @@ export const History = () => {
                     day: "numeric",
                     year: "numeric",
                   })}
-                  ) {dream?.breakdown?.title} <br />
-                  <br /> {dream?.interpretation} <br />
+                  ) {dream.breakdown?.title || "no title saved"} <br />
+                  <br /> {dream.interpretation ||
+                    "no interpretation saved"}{" "}
+                  <br />
                   <br /> {dream?.content}
                 </Text>
               </View>
