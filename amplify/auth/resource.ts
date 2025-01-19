@@ -1,4 +1,6 @@
 import { defineAuth } from "@aws-amplify/backend";
+import { cognitoUserPoolsTokenProvider } from "aws-amplify/auth/cognito";
+import { sessionStorage } from "aws-amplify/utils";
 
 /**
  * Define and configure your auth resource
@@ -9,3 +11,5 @@ export const auth = defineAuth({
     email: true,
   },
 });
+
+cognitoUserPoolsTokenProvider.setKeyValueStorage(sessionStorage);

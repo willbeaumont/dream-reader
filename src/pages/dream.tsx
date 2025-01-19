@@ -17,7 +17,6 @@ import {
   Text,
   Tabs,
 } from "@aws-amplify/ui-react";
-import { History } from "./history";
 
 Amplify.configure(outputs);
 
@@ -36,9 +35,7 @@ export const Dream = () => {
   );
 
   useEffect(() => {
-    console.log("breakdown.data effect", breakdown.data);
     if (breakdown.data) {
-      console.log("breakdown.data exists");
       generateInterpretation({
         breakdown: JSON.stringify(breakdown.data),
       });
@@ -46,11 +43,8 @@ export const Dream = () => {
   }, [breakdown.data]);
 
   useEffect(() => {
-    console.log("interpretation.data effect", interpretation.data);
     if (interpretation.data) {
-      console.log("interpretation.data effect has data");
       setActiveTab("dream-insights");
-      console.log("updating dream", dreamId);
       dreamId &&
         updateDream(dreamId, breakdown.data, interpretation.data.insight);
     }
@@ -73,7 +67,6 @@ export const Dream = () => {
       content: dreamInput,
     });
     data && setDreamId(data.id);
-    console.log("dream created", data);
     generateBreakdown({ dream: dreamInput });
   }
 
@@ -209,20 +202,6 @@ export const Dream = () => {
                     </Accordion.Content>
                   </Accordion.Item>
                 </Accordion.Container>
-              </View>
-            ),
-          },
-          {
-            label: "My dreams",
-            value: "my-dreams",
-            content: (
-              <View
-                style={{
-                  display: "grid",
-                  gap: "1rem",
-                }}
-              >
-                <History />
               </View>
             ),
           },
