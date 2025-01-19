@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export const TopNavigation = () => {
-  const { route, signOut } = useAuthenticator();
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -39,7 +39,8 @@ export const TopNavigation = () => {
           <Menu size="large" menuAlign="end">
             <MenuItem onClick={() => navigate("/")}>About</MenuItem>
             <MenuItem onClick={() => navigate("/dream")}>Dream</MenuItem>
-            {route === "authenticated" ? (
+            <MenuItem onClick={() => navigate("/history")}>History</MenuItem>
+            {user ? (
               <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
             ) : (
               <MenuItem onClick={() => navigate("/dream")}>Sign In</MenuItem>

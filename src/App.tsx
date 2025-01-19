@@ -5,8 +5,9 @@ import {
   type Theme,
 } from "@aws-amplify/ui-react";
 import { TopNavigation } from "./components/top-navigation";
-import { About } from "./components/about";
-import { Dream } from "./components/dream";
+import { About } from "./pages/about";
+import { Dream } from "./pages/dream";
+import { History } from "./pages/history";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MainContent } from "./components/main-content";
 
@@ -54,6 +55,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<About />} />
                 <Route path="/dream" element={<Dream />} />
+                <Route path="/history" element={<History />} />
               </Routes>
             </MainContent>
           </View>
