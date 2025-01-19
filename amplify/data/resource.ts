@@ -43,7 +43,7 @@ const schema = a.schema({
       breakdown: a.ref("Breakdown"),
       interpretation: a.string(),
     })
-    .authorization((allow) => [allow.authenticated()]),
+    .authorization((allow) => [allow.owner()]),
 
   generateBreakdown: a
     .generation({
