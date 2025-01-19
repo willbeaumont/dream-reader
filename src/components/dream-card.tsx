@@ -10,16 +10,9 @@ import { Schema } from "../../amplify/data/resource";
 
 const cardBottomMargin = 10;
 
-export const DreamCard = ({
-  data,
-  index,
-}: {
-  data: Schema["Dream"]["type"];
-  index: number;
-}) => {
+export const DreamCard = ({ data }: { data: Schema["Dream"]["type"] }) => {
   return (
     <Card
-      key={index}
       borderRadius={"medium"}
       variation="outlined"
       width={400}
@@ -44,7 +37,7 @@ export const DreamCard = ({
           items={[
             {
               trigger: "Dream",
-              value: `dream-${index}`,
+              value: "dream-input",
               content: data?.content,
             },
           ]}

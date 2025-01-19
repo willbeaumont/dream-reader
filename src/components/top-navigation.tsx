@@ -5,6 +5,7 @@ import {
   Menu,
   useAuthenticator,
   MenuItem,
+  Divider,
 } from "@aws-amplify/ui-react";
 
 import { useNavigate } from "react-router-dom";
@@ -40,6 +41,7 @@ export const TopNavigation = () => {
             <MenuItem onClick={() => navigate("/")}>About</MenuItem>
             <MenuItem onClick={() => navigate("/dream")}>Dream</MenuItem>
             <MenuItem onClick={() => navigate("/history")}>History</MenuItem>
+            <Divider />
             {user ? (
               <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
             ) : (

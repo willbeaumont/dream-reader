@@ -4,6 +4,7 @@ import {
   Loader,
   Text,
   useAuthenticator,
+  useBreakpointValue,
   View,
 } from "@aws-amplify/ui-react";
 import { client } from "../client";
@@ -16,6 +17,12 @@ import { DreamCard } from "../components/dream-card";
 Amplify.configure(outputs);
 
 const Content = () => {
+  const itemsPerPage = useBreakpointValue({
+    base: 1,
+    medium: 2,
+    large: 3,
+  }) as number;
+
   const [data, setData] = useState<Schema["Dream"]["type"][]>();
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuthenticator((context) => [context.user]);
@@ -41,6 +48,7 @@ const Content = () => {
   if (!user) return <Text>Please sign in</Text>;
   if (isLoading) return <Loader />;
   if (!data?.length) return <Text>No dreams found, navigate to "Dream"</Text>;
+
   return (
     <Collection
       items={data}
@@ -49,9 +57,9 @@ const Content = () => {
       gap="20px"
       wrap="nowrap"
       isPaginated
-      itemsPerPage={3}
+      itemsPerPage={itemsPerPage}
     >
-      {(item, index) => <DreamCard data={item} index={index} />}
+      {(item, index) => <DreamCard data={item} key={index} />}
     </Collection>
   );
 };
