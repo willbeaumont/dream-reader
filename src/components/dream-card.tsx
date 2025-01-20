@@ -1,48 +1,21 @@
-import {
-  Accordion,
-  Badge,
-  Card,
-  Heading,
-  Text,
-  View,
-} from "@aws-amplify/ui-react";
+import { Card, Link, View } from "@aws-amplify/ui-react";
 import { Schema } from "../../amplify/data/resource";
-
-const cardBottomMargin = 10;
+import { DreamInterpretation } from "./dream-interpretation";
 
 export const DreamCard = ({ data }: { data: Schema["Dream"]["type"] }) => {
   return (
-    <Card
-      borderRadius={"medium"}
-      variation="outlined"
-      width={400}
-      height={500}
-      overflow={"scroll"}
-    >
-      <View padding="xs" color={"font.primary"}>
-        <Heading level={3} marginBottom={cardBottomMargin}>
-          {data.breakdown?.title || "no title saved"}
-        </Heading>
-        <Badge marginBottom={cardBottomMargin}>
-          {new Date(data.createdAt).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </Badge>
-        <View marginBottom={cardBottomMargin}>
-          <Text>{data.interpretation || "no interpretation saved"} </Text>
+    <Link href={`/explore?id=${data.id}`} isExternal={false}>
+      <Card
+        borderRadius={"medium"}
+        variation="outlined"
+        width={385}
+        height={485}
+        overflow={"scroll"}
+      >
+        <View padding="xs" color={"font.primary"}>
+          <DreamInterpretation headingLevel={3} data={data} />
         </View>
-        <Accordion
-          items={[
-            {
-              trigger: "Dream",
-              value: "dream-input",
-              content: data?.content,
-            },
-          ]}
-        />
-      </View>
-    </Card>
+      </Card>
+    </Link>
   );
 };

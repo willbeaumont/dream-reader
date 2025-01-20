@@ -25,7 +25,8 @@ const breakdownPrompt = `You are an AI dream interpreter, trained in various psy
 const interpretationPrompt = `${breakdownPrompt}. Use all of these elements to provide an Overall Analysis:
   * Provide a cohesive interpretation that ties together the individual elements.
   * Offer insights into potential meanings or messages from the subconscious.
-  * Should be in the narrative format, 2 paragraphs at most`;
+  * Should be in the narrative format, 2 paragraphs at most.
+  * Only provide your interpretation, do not add the header or title to your output.`;
 
 const schema = a.schema({
   Breakdown: a.customType({
@@ -41,7 +42,7 @@ const schema = a.schema({
     .model({
       content: a.string(),
       breakdown: a.ref("Breakdown"),
-      interpretation: a.string(),
+      interpretation: a.string().array(),
     })
     .authorization((allow) => [allow.owner()]),
 
@@ -66,7 +67,7 @@ const schema = a.schema({
     })
     .returns(
       a.customType({
-        insight: a.string(),
+        insight: a.string().array(),
       })
     )
     .authorization((allow) => allow.authenticated()),

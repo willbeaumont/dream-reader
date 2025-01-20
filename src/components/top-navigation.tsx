@@ -3,10 +3,12 @@ import {
   Flex,
   Heading,
   Menu,
+  Text,
   useAuthenticator,
   MenuItem,
   Divider,
 } from "@aws-amplify/ui-react";
+import { FiExternalLink } from "react-icons/fi";
 
 import { useNavigate } from "react-router-dom";
 
@@ -39,8 +41,15 @@ export const TopNavigation = () => {
         <Flex direction="column">
           <Menu size="large" menuAlign="end">
             <MenuItem onClick={() => navigate("/")}>About</MenuItem>
-            <MenuItem onClick={() => navigate("/dream")}>Dream</MenuItem>
+            <MenuItem onClick={() => navigate("/capture")}>Dream</MenuItem>
             <MenuItem onClick={() => navigate("/history")}>History</MenuItem>
+            <Divider />
+            <MenuItem
+              onClick={() => window.open("https://sandiaweb.dev", "_blank")}
+            >
+              <Text paddingRight={4}>Sandia Web Dev</Text>
+              <FiExternalLink />
+            </MenuItem>
             <Divider />
             {user ? (
               <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
