@@ -41,8 +41,20 @@ export const TopNavigation = () => {
         <Flex direction="column">
           <Menu size="large" menuAlign="end">
             <MenuItem onClick={() => navigate("/")}>About</MenuItem>
-            <MenuItem onClick={() => navigate("/capture")}>Dream</MenuItem>
-            <MenuItem onClick={() => navigate("/history")}>History</MenuItem>
+            {user && (
+              <MenuItem onClick={() => navigate("/capture")}>Dream</MenuItem>
+            )}
+            {user && (
+              <MenuItem onClick={() => navigate("/history")}>History</MenuItem>
+            )}
+            <Divider />
+            {user ? (
+              <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+            ) : (
+              <MenuItem onClick={() => navigate("/capture")}>
+                Sign Up/In
+              </MenuItem>
+            )}
             <Divider />
             <MenuItem
               onClick={() => window.open("https://sandiaweb.dev", "_blank")}
@@ -50,12 +62,6 @@ export const TopNavigation = () => {
               <Text paddingRight={4}>Sandia Web Dev</Text>
               <FiExternalLink />
             </MenuItem>
-            <Divider />
-            {user ? (
-              <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-            ) : (
-              <MenuItem onClick={() => navigate("/dream")}>Sign In</MenuItem>
-            )}
           </Menu>
         </Flex>
       </Flex>

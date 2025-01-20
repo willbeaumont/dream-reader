@@ -6,7 +6,7 @@ import { generateClient } from "aws-amplify/api";
 import { Schema } from "../../amplify/data/resource";
 
 import { Authenticator, View, Accordion, Loader } from "@aws-amplify/ui-react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { DreamBreakdown } from "../components/dream-breakdown";
 import { DreamInterpretation } from "../components/dream-interpretation";
 
@@ -17,6 +17,7 @@ const client = generateClient<Schema>();
 type Dream = Schema["Dream"]["type"];
 
 export const ExploreDream = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const dreamId = searchParams.get("id");
 
@@ -31,6 +32,8 @@ export const ExploreDream = () => {
           setDreamData(data);
         }
       });
+    } else {
+      navigate("/capture");
     }
   }, [dreamId]);
 
