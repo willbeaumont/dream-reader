@@ -53,7 +53,7 @@ export const EditDream = () => {
     breakdown?: Dream["breakdown"],
     interpretation?: Dream["interpretation"]
   ) {
-    client.models.Dream.update({
+    await client.models.Dream.update({
       id,
       breakdown,
       interpretation,

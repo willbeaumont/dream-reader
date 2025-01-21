@@ -1,18 +1,23 @@
-import { Card, Link, View } from "@aws-amplify/ui-react";
+import { Card, Link, useBreakpointValue, View } from "@aws-amplify/ui-react";
 import { Schema } from "../../amplify/data/resource";
 import { DreamInterpretation } from "./dream-interpretation";
 
-export const DreamCard = ({ data }: { data: Schema["Dream"]["type"] }) => {
+type Dream = Schema["Dream"]["type"];
+export const DreamCard = ({ data }: { data: Dream }) => {
+  const width = useBreakpointValue({
+    base: "100%",
+    medium: "50%",
+    large: "33.3%",
+  }) as string;
   return (
-    <Link href={`/explore?id=${data.id}`} isExternal={false}>
+    <Link width={width} href={`/explore?id=${data.id}`} isExternal={false}>
       <Card
+        height={485}
         borderRadius={"medium"}
         variation="outlined"
-        width={385}
-        height={485}
         overflow={"scroll"}
       >
-        <View padding="xs" color={"font.primary"}>
+        <View padding="xs">
           <DreamInterpretation headingLevel={3} data={data} />
         </View>
       </Card>

@@ -42,6 +42,7 @@ function App() {
         <View
           backgroundColor={"background.primary"}
           width={"100%"}
+          color={"font.primary"}
           minHeight={"100vh"}
           padding={"0 .5rem"}
         >

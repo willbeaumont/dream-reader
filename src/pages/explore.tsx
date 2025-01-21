@@ -30,10 +30,10 @@ export const ExploreDream = () => {
         if (data) {
           console.log(data);
           setDreamData(data);
+        } else {
+          navigate("/capture");
         }
       });
-    } else {
-      navigate("/capture");
     }
   }, [dreamId]);
 
@@ -59,7 +59,7 @@ export const ExploreDream = () => {
             {
               trigger: "AI Breakdown",
               value: "dream-breakdown",
-              content: <DreamBreakdown data={dreamData} />,
+              content: <DreamBreakdown breakdownData={dreamData.breakdown} />,
             },
           ]}
         />

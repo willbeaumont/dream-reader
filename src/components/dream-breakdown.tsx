@@ -1,65 +1,35 @@
-import { Heading, Text, View } from "@aws-amplify/ui-react";
+import { View } from "@aws-amplify/ui-react";
 import { Schema } from "../../amplify/data/resource";
 
-type Dream = Schema["Dream"]["type"];
+import { BreakdownList } from "./dream-breakdown-list";
 
-export const DreamBreakdown = ({ data }: { data: Dream }) => (
-  <section>
-    <Heading level={3}>Dream Elements</Heading>
-    <ul>
-      {data.breakdown?.elements?.map((item, itemIndex) => (
-        <View as="li" color="font.primary" key={`dreamBreakdown-${itemIndex}`}>
-          <Text>{item}</Text>
-        </View>
-      ))}
-    </ul>
-    <Heading level={3}>Symbol Analysis</Heading>
-    <ul>
-      {data.breakdown?.symbols?.map((item, itemIndex) => (
-        <View
-          as="li"
-          color="font.primary"
-          key={`dreamInterpretation-${itemIndex}`}
-        >
-          <Text>{item}</Text>
-        </View>
-      ))}
-    </ul>
-    <Heading level={3}>Emotional Context</Heading>
-    <ul>
-      {data.breakdown?.context?.map((item, itemIndex) => (
-        <View
-          as="li"
-          color="font.primary"
-          key={`dreamInterpretation-${itemIndex}`}
-        >
-          <Text>{item}</Text>
-        </View>
-      ))}
-    </ul>
-    <Heading level={3}>Thematic Interpretation</Heading>
-    <ul>
-      {data.breakdown?.themes?.map((item, itemIndex) => (
-        <View
-          as="li"
-          color="font.primary"
-          key={`dreamInterpretation-${itemIndex}`}
-        >
-          <Text>{item}</Text>
-        </View>
-      ))}
-    </ul>
-    <Heading level={3}>Personal Relevance</Heading>
-    <ul>
-      {data.breakdown?.relevance?.map((item, itemIndex) => (
-        <View
-          as="li"
-          color="font.primary"
-          key={`dreamInterpretation-${itemIndex}`}
-        >
-          <Text>{item}</Text>
-        </View>
-      ))}
-    </ul>
-  </section>
+type Breakdown = Schema["Dream"]["type"]["breakdown"];
+
+export const DreamBreakdown = ({
+  breakdownData,
+}: {
+  breakdownData: Breakdown;
+}) => (
+  <View as="section">
+    <BreakdownList
+      title="Dream Elements"
+      itemList={breakdownData?.elements ?? []}
+    />
+    <BreakdownList
+      title="Symbol Analysis"
+      itemList={breakdownData?.symbols ?? []}
+    />
+    <BreakdownList
+      title="Emotional Context"
+      itemList={breakdownData?.context ?? []}
+    />
+    <BreakdownList
+      title="Thematic Interpretation"
+      itemList={breakdownData?.themes ?? []}
+    />
+    <BreakdownList
+      title="Personal Relevance"
+      itemList={breakdownData?.relevance ?? []}
+    />
+  </View>
 );
