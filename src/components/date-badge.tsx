@@ -1,11 +1,17 @@
 import { Badge } from "@aws-amplify/ui-react";
 
-export const DateBadge = ({ dateString }: { dateString: string }) => (
+export const DateBadge = ({
+  dateString,
+}: {
+  dateString: string | null | undefined;
+}) => (
   <Badge>
-    {new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })}
+    {dateString
+      ? new Date(dateString).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })
+      : "Date missing."}
   </Badge>
 );

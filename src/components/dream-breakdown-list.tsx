@@ -1,11 +1,13 @@
 import { Heading, View, Text } from "@aws-amplify/ui-react";
 
+type NullableString = string | null | undefined;
+
 export const BreakdownList = ({
   title,
   itemList,
 }: {
-  title: string;
-  itemList: (string | null)[];
+  title: NullableString;
+  itemList: NullableString[] | null | undefined;
 }) => {
   if (!itemList) return null;
   return (

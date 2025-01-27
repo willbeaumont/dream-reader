@@ -4,13 +4,16 @@ import {
   ThemeProvider,
   type Theme,
 } from "@aws-amplify/ui-react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+
 import { TopNavigation } from "./components/top-navigation";
+import { MainContent } from "./components/main-content";
 import { About } from "./pages/about";
 import { EditDream } from "./pages/capture";
 import { History } from "./pages/history";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { MainContent } from "./components/main-content";
 import { ExploreDream } from "./pages/explore";
+import { DreamContext, type Dream } from "./DreamContext";
 
 function App() {
   const theme: Theme = {
@@ -36,6 +39,13 @@ function App() {
     },
   };
 
+  const [dream, setDream] = useState<Dream>({
+    id: undefined,
+    content: undefined,
+    breakdown: undefined,
+    interpretation: undefined,
+  });
+
   return (
     <Router>
       <ThemeProvider theme={theme} colorMode="system">
@@ -54,12 +64,14 @@ function App() {
           >
             <TopNavigation />
             <MainContent>
-              <Routes>
-                <Route path="/" element={<About />} />
-                <Route path="/capture" element={<EditDream />} />
-                <Route path="/explore" element={<ExploreDream />} />
-                <Route path="/history" element={<History />} />
-              </Routes>
+              <DreamContext.Provider value={{ dream, setDream }}>
+                <Routes>
+                  <Route path="/" element={<About />} />
+                  <Route path="/capture" element={<EditDream />} />
+                  <Route path="/explore" element={<ExploreDream />} />
+                  <Route path="/history" element={<History />} />
+                </Routes>
+              </DreamContext.Provider>
             </MainContent>
           </View>
         </View>

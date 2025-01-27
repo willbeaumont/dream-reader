@@ -1,8 +1,6 @@
 import { View, Heading, Text, type HeadingLevel } from "@aws-amplify/ui-react";
 import { DateBadge } from "./date-badge";
-import { Schema } from "../../amplify/data/resource";
-
-type Dream = Schema["Dream"]["type"];
+import { type Dream } from "../DreamContext";
 
 export const DreamInterpretation = ({
   headingLevel,
