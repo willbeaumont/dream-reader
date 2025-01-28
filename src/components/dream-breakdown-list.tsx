@@ -1,6 +1,5 @@
 import { Heading, View, Text } from "@aws-amplify/ui-react";
-
-type NullableString = string | null | undefined;
+import { type NullableString } from "../DreamContext";
 
 export const BreakdownList = ({
   title,

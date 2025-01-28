@@ -11,8 +11,8 @@ import { client } from "../client";
 import { Amplify } from "aws-amplify";
 import outputs from "../../amplify_outputs.json";
 import { useEffect, useState } from "react";
-import { Schema } from "../../amplify/data/resource";
 import { DreamCard } from "../components/dream-card";
+import { type Dream } from "../DreamContext";
 
 Amplify.configure(outputs);
 
@@ -22,8 +22,7 @@ const Content = () => {
     medium: 2,
     large: 3,
   }) as number;
-
-  const [data, setData] = useState<Schema["Dream"]["type"][]>();
+  const [data, setData] = useState<Dream[]>();
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuthenticator((context) => [context.user]);
 

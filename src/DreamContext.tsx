@@ -1,18 +1,23 @@
 import { createContext } from "react";
 
-type NullableString = string | null | undefined;
+export type NullableString = string | null | undefined;
+
+export type Breakdown =
+  | {
+      title?: NullableString;
+      elements?: NullableString[] | null | undefined;
+      symbols?: NullableString[] | null | undefined;
+      context?: NullableString[] | null | undefined;
+      themes?: NullableString[] | null | undefined;
+      relevance?: NullableString[] | null | undefined;
+    }
+  | null
+  | undefined;
 
 export type Dream = {
   id?: NullableString;
   content?: NullableString;
-  breakdown?: {
-    title?: NullableString;
-    elements?: NullableString[] | null | undefined;
-    symbols?: NullableString[] | null | undefined;
-    context?: NullableString[] | null | undefined;
-    themes?: NullableString[] | null | undefined;
-    relevance?: NullableString[] | null | undefined;
-  } | null;
+  breakdown?: Breakdown;
   interpretation?: NullableString[] | null | undefined;
   createdAt?: NullableString;
 };

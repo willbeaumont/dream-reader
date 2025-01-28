@@ -23,7 +23,7 @@ export const ExploreDream = () => {
 
   const [dreamData, setDreamData] = useState<Dream>(dream);
 
-  // get dream data if dreamId is present
+  // get dream data if dreamId is present and dream context is not the requested dream
   useEffect(() => {
     if (dreamId && dreamId != dream.id) {
       client.models.Dream.get({ id: dreamId }).then(({ data }) => {

@@ -1,19 +1,6 @@
 import { View } from "@aws-amplify/ui-react";
 import { BreakdownList } from "./dream-breakdown-list";
-
-type NullableString = string | null | undefined;
-
-type Breakdown =
-  | {
-      title?: NullableString;
-      elements?: NullableString[] | null;
-      symbols?: NullableString[] | null;
-      context?: NullableString[] | null;
-      themes?: NullableString[] | null;
-      relevance?: NullableString[] | null;
-    }
-  | null
-  | undefined;
+import { type Breakdown } from "../DreamContext";
 
 export const DreamBreakdown = ({
   breakdownData,
