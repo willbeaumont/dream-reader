@@ -10,9 +10,9 @@ import {
 import { client } from "../client";
 import { Amplify } from "aws-amplify";
 import outputs from "../../amplify_outputs.json";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { DreamCard } from "../components/dream-card";
-import { type Dream } from "../DreamContext";
+import { type Dream, DreamContext } from "../DreamContext";
 
 Amplify.configure(outputs);
 
@@ -24,6 +24,7 @@ const Content = () => {
   }) as number;
   const [data, setData] = useState<Dream[]>();
   const [isLoading, setIsLoading] = useState(true);
+  const { dream } = useContext(DreamContext);
   const { user } = useAuthenticator((context) => [context.user]);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Content = () => {
       setIsLoading(true);
       fetchDreams().then(() => setIsLoading(false));
     }
-  }, [user]);
+  }, [user, dream]);
 
   if (!user) return <Text>Please sign in</Text>;
   if (isLoading) return <Loader />;

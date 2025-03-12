@@ -10,6 +10,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { DreamBreakdown } from "../components/dream-breakdown";
 import { DreamInterpretation } from "../components/dream-interpretation";
 import { type Dream, DreamContext } from "../DreamContext";
+import { DeleteButton } from "../components/delete-button";
 
 Amplify.configure(outputs);
 
@@ -49,7 +50,9 @@ export const ExploreDream = () => {
           padding: "1rem",
         }}
       >
-        <DreamInterpretation headingLevel={2} data={dreamData} />
+        <DreamInterpretation headingLevel={2} data={dreamData}>
+          <DeleteButton data={dream} />
+        </DreamInterpretation>
         <Accordion
           items={[
             {

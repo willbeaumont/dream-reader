@@ -5,9 +5,11 @@ import { type Dream } from "../DreamContext";
 export const DreamInterpretation = ({
   headingLevel,
   data,
+  children,
 }: {
   headingLevel: HeadingLevel;
   data: Dream;
+  children?: React.ReactNode;
 }) => (
   <View typeof="article">
     <View
@@ -20,7 +22,17 @@ export const DreamInterpretation = ({
         <Heading level={headingLevel} marginBottom={10}>
           {data.breakdown?.title}
         </Heading>
-        <DateBadge dateString={data.createdAt} />
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: "1rem",
+            alignItems: "center",
+          }}
+        >
+          <DateBadge dateString={data.createdAt} />
+          {children}
+        </View>
       </View>
       {data.interpretation?.map((paragraph, index) => (
         <Text key={`interpretation-paragraph-${index}`}>{paragraph}</Text>
