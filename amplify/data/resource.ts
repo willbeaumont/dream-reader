@@ -48,7 +48,7 @@ const schema = a.schema({
 
   generateBreakdown: a
     .generation({
-      aiModel: a.ai.model("Claude 3.5 Haiku"),
+      aiModel: a.ai.model("Claude Haiku 4.5"),
       systemPrompt: breakdownPrompt,
     })
     .arguments({
@@ -59,7 +59,7 @@ const schema = a.schema({
 
   generateInterpretation: a
     .generation({
-      aiModel: a.ai.model("Claude 3.5 Haiku"),
+      aiModel: a.ai.model("Claude Haiku 4.5"),
       systemPrompt: interpretationPrompt,
     })
     .arguments({
@@ -68,7 +68,7 @@ const schema = a.schema({
     .returns(
       a.customType({
         insight: a.string().array(),
-      })
+      }),
     )
     .authorization((allow) => allow.authenticated()),
 });
