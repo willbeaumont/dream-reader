@@ -48,7 +48,7 @@ const schema = a.schema({
 
   generateBreakdown: a
     .generation({
-      aiModel: a.ai.model("Claude Haiku 4.5"),
+      aiModel: a.ai.model("Claude 3.5 Haiku"),
       systemPrompt: breakdownPrompt,
     })
     .arguments({
@@ -59,7 +59,7 @@ const schema = a.schema({
 
   generateInterpretation: a
     .generation({
-      aiModel: a.ai.model("Claude Haiku 4.5"),
+      aiModel: a.ai.model("Claude 3.5 Haiku"),
       systemPrompt: interpretationPrompt,
     })
     .arguments({
