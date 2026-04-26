@@ -1,13 +1,12 @@
+import "../amplifyConfig";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Amplify } from "aws-amplify";
 import { generateClient } from "aws-amplify/api";
 import { useAIGeneration } from "../client";
 
 import { DreamContext, type DreamContextType } from "../DreamContext";
 import { Schema } from "../../amplify/data/resource";
-import outputs from "../../amplify_outputs.json";
 
 import {
   Authenticator,
@@ -17,7 +16,6 @@ import {
   TextAreaField,
 } from "@aws-amplify/ui-react";
 
-Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 

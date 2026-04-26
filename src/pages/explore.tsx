@@ -1,7 +1,6 @@
+import "../amplifyConfig";
 import { useContext, useEffect, useState } from "react";
 
-import { Amplify } from "aws-amplify";
-import outputs from "../../amplify_outputs.json";
 import { generateClient } from "aws-amplify/api";
 import { Schema } from "../../amplify/data/resource";
 
@@ -12,7 +11,6 @@ import { DreamInterpretation } from "../components/dream-interpretation";
 import { type Dream, DreamContext } from "../DreamContext";
 import { DeleteButton } from "../components/delete-button";
 
-Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
 

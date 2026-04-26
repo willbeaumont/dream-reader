@@ -1,3 +1,4 @@
+import "../amplifyConfig";
 import {
   Collection,
   Heading,
@@ -8,13 +9,10 @@ import {
   View,
 } from "@aws-amplify/ui-react";
 import { client } from "../client";
-import { Amplify } from "aws-amplify";
-import outputs from "../../amplify_outputs.json";
 import { useEffect, useState, useContext } from "react";
 import { DreamCard } from "../components/dream-card";
 import { type Dream, DreamContext } from "../DreamContext";
 
-Amplify.configure(outputs);
 
 const Content = () => {
   const itemsPerPage = useBreakpointValue({
